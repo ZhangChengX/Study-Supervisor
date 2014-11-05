@@ -1,70 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:weightSum="1"
-	android:background="@color/pink" android:id="@+id/layout_bed">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-	<com.lockscreen.SliderRelativeLayout
-		android:layout_gravity="right" android:id="@+id/slider_layout"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:background="@android:color/transparent">
-
-		<ImageView android:src="@drawable/pillow"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:id="@+id/pillow" android:layout_alignParentTop="true"
-			android:layout_alignParentLeft="true" android:layout_marginTop="31dp"
-			android:layout_below="@drawable/doll0"></ImageView>
-		
-		<ImageView android:id="@+id/sock" 
-		    android:layout_width="wrap_content" 
-		    android:layout_marginTop="220dp" 
-		    android:layout_height="wrap_content" 
-		    android:background="@drawable/sock2"></ImageView>
-
-
-	
-		<ImageView android:background="@drawable/doll0" 
-		    android:layout_alignParentLeft="true" 
-		    android:layout_width="match_parent"
-			android:layout_height="match_parent" 
-			android:layout_alignTop="@+id/pillow" 
-			android:id="@+id/boy"></ImageView>
-	
-
-
-		<ImageView android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			 android:background="@drawable/quilt"
-			android:layout_alignParentTop="true" 
-			android:layout_alignParentRight="true"
-			android:layout_marginTop="@dimen/CorY" 
-			android:id="@+id/quilt1"></ImageView>
-		<com.lockscreen.MyQuilt android:id="@+id/mylayout" 
-		    android:background="@android:color/transparent" 
-		    android:layout_width="fill_parent" 
-		    android:layout_height="fill_parent" 
-		    android:layout_alignParentTop="true" 
-		    android:layout_alignParentLeft="true">
-		    
-			<ImageView android:layout_height="wrap_content" 
-			    android:background="@anim/zzz" 
-			    android:layout_width="wrap_content" 
-			    android:id="@+id/zzz_sign" 
-			    android:layout_alignParentTop="true" 
-			    android:layout_alignParentRight="true" 
-			    android:layout_marginTop="97dp"></ImageView>
-		</com.lockscreen.MyQuilt>
-
-	</com.lockscreen.SliderRelativeLayout>
-	<TextView android:textColor="@color/black"
-	    android:id="@+id/textClock" 
-	    android:layout_height="wrap_content" 
-	    android:textSize="50sp"
-	    android:layout_width="wrap_content" 
-	    android:layout_alignParentBottom="true" 
-	    android:layout_centerHorizontal="true" 
-	    android:layout_marginBottom="37dp"
-	    android:textStyle="bold">
-	</TextView>
-
-</RelativeLayout>
+</LinearLayout>

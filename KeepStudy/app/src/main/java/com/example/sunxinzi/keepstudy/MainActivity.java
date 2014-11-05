@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Spinner mSpinner = (Spinner) findViewById(R.id.spinner);
         TimePicker mTimePicker = (TimePicker) findViewById(R.id.timePicker);
         Button mButton = (Button) findViewById(R.id.button);
 
