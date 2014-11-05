@@ -6,24 +6,37 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 public class MainActivity extends Activity {
 
     private int hours = 0;
     private int minutes = 0;
+    private ArrayList classArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Spinner mSpinner = (Spinner) findViewById(R.id.spinner);
         TimePicker mTimePicker = (TimePicker) findViewById(R.id.timePicker);
         Button mButton = (Button) findViewById(R.id.button);
+
+        mSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
 
         mTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
 
