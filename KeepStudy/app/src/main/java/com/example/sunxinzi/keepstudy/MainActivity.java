@@ -11,15 +11,15 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 
 
 public class MainActivity extends Activity {
 
-    private int hours = 0;
-    private int minutes = 0;
-    private ArrayList classArray;
+    private static final String[] m={"Data Base I","Android app develop","Analysis of Algorithm","Operation System"};
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,32 +27,22 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         Spinner mSpinner = (Spinner) findViewById(R.id.spinner);
-        TimePicker mTimePicker = (TimePicker) findViewById(R.id.timePicker);
+        //connect adapter with data m
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,m);
+        mSpinner.setAdapter(adapter);
+
+        final TimePicker mTimePicker = (TimePicker) findViewById(R.id.timePicker);
+        mTimePicker.setIs24HourView(true);
         Button mButton = (Button) findViewById(R.id.button);
-
-        mSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
-
-        mTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                MainActivity.this.hours = hourOfDay;
-                MainActivity.this.minutes = minute;
-            }
-        });
 
         mButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if ((MainActivity.this.hours == 0) && (MainActivity.this.minutes == 0)) {
-                    Toast.makeText(MainActivity.this, "Please set the timer first!", Toast.LENGTH_LONG);
+                Toast.makeText(MainActivity.this, mTimePicker.getCurrentHour() + ":" + mTimePicker.getCurrentMinute()
+                        , Toast.LENGTH_LONG).show();
+                if ((mTimePicker.getCurrentHour() == 0) && (mTimePicker.getCurrentMinute() == 0)) {
+                    Toast.makeText(MainActivity.this, "Please set the timer first!", Toast.LENGTH_LONG).show();
                 } else {
                     Intent intent = new Intent(MainActivity.this,
                             LockScreenActivity.class);
@@ -77,9 +67,12 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
+
+
+        //if (id == R.id.action_settings) {
+        //    return true;
+        //}
 
         return super.onOptionsItemSelected(item);
     }
