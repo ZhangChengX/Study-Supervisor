@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -22,15 +23,23 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
+    //this data will be replaced by DB data
     private static final String[] m = {"Data Base I", "Android app develop", "Analysis of Algorithm", "Operation System"};
-    private ArrayAdapter<String> adapter;
 
-    private SQLiteOpenHelper myOpenHelper;
+    private ArrayAdapter<String> adapter;
+    private DataBaseOpenHelper mDBOpenHelper;
+    private SQLiteDatabase mDB;
+    private SimpleCursorAdapter mCruserAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //create DB and table
+        mDBOpenHelper = new DataBaseOpenHelper(this);
+        mDB = mDBOpenHelper.getWritableDatabase();
+
 
         Spinner mSpinner = (Spinner) findViewById(R.id.spinner);
         //connect adapter with data m
