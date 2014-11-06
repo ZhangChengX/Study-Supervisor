@@ -2,6 +2,7 @@ package com.example.sunxinzi.keepstudy;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.TextView;
 
 /**
  * Created by SunXinzi on 14/11/5.
