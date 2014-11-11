@@ -32,6 +32,8 @@
         <activity
             android:name="com.example.sunxinzi.keepstudy.ReportActivity">
         </activity>
+
+
     </application>
 
 </manifest>
