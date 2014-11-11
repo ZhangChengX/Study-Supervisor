@@ -1,8 +1,13 @@
 package com.example.sunxinzi.keepstudy;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +26,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements LocationListener {
+
+    private static String TAG = "Keep Study";
 
     //this data will be replaced by DB data
     private static final String[] m = {"Data Base I", "Android app develop", "Analysis of Algorithm", "Operation System"};
@@ -30,6 +37,11 @@ public class MainActivity extends Activity {
     private DataBaseOpenHelper mDBOpenHelper;
     private SQLiteDatabase mDB;
     private SimpleCursorAdapter mCruserAdapter;
+
+    private LocationManager mLocationManager;
+    private Location mLocation;
+    double longitude;
+    double latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +67,15 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+
+                if (mLocation != null) {
+                    longitude = mLocation.getLongitude();
+                    latitude = mLocation.getLatitude();
+                    log("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
+                } else {
+                    log("No available location found.");
+                }
+
                 Toast.makeText(MainActivity.this, mTimePicker.getCurrentHour() + ":" + mTimePicker.getCurrentMinute()
                         , Toast.LENGTH_LONG).show();
                 if ((mTimePicker.getCurrentHour() == 0) && (mTimePicker.getCurrentMinute() == 0)) {
@@ -65,8 +86,58 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
+
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, this);
+        //mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, this);
+        mLocation = getLocation(MainActivity.this);
+
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        mLocationManager.removeUpdates(this);
+
+    }
+
+    public static Location getLocation(Context context) {
+        LocationManager locationManager = (LocationManager) context.
+                getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.
+                getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        //if (location == null) {
+        //    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        //}
+        log(TAG + "------location: " + location);
+        return location;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        if (location != null) {
+            log("经度：" + location.getLongitude() + "\n" + "纬度" + location.getLatitude());
+        }
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -93,5 +164,14 @@ public class MainActivity extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private static void log(String msg) {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG, msg);
     }
 }
