@@ -1,8 +1,13 @@
 package com.example.sunxinzi.keepstudy;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +30,9 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements LocationListener {
+
+    private static String TAG = "Keep Study";
 
     //this data will be replaced by DB data
     //private static final String[] m = {"Data Base I", "Android app develop", "Analysis of Algorithm", "Operation System"};
@@ -33,6 +40,11 @@ public class MainActivity extends Activity {
     private SimpleAdapter adapter;
     private DataBaseOpenHelper dbHelper;
     private List<Course> courses;
+
+    private LocationManager mLocationManager;
+    private Location mLocation;
+    double longitude;
+    double latitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +59,15 @@ public class MainActivity extends Activity {
 
             @Override
             public void onClick(View v) {
+
+                if (mLocation != null) {
+                    longitude = mLocation.getLongitude();
+                    latitude = mLocation.getLatitude();
+                    log("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
+                } else {
+                    log("No available location found.");
+                }
+
                 Toast.makeText(MainActivity.this, mTimePicker.getCurrentHour() + ":" + mTimePicker.getCurrentMinute()
                         , Toast.LENGTH_LONG).show();
                 if ((mTimePicker.getCurrentHour() == 0) && (mTimePicker.getCurrentMinute() == 0)) {
@@ -57,6 +78,62 @@ public class MainActivity extends Activity {
                 }
             }
         });
+
+
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, this);
+        //mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, this);
+        mLocation = getLocation(MainActivity.this);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+		mLocationManager.removeUpdates(this);
+
+		//show the courses after user add or del course form setting view
+        //keep the course data fresh
+        courses = GetAllCourses();
+        Spinner mSpinner = (Spinner) findViewById(R.id.spinner);
+        //connect adapter with data m
+        adapter = new SimpleAdapter(this, setForListView(courses), R.layout.simple_spinner, new String[] {"course"}, new int[] { R.id.spinnertextview});
+        mSpinner.setAdapter(adapter);
+	}
+public static Location getLocation(Context context) {
+        LocationManager locationManager = (LocationManager) context.
+                getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.
+                getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        //if (location == null) {
+        //    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        //}
+        log(TAG + "------location: " + location);
+        return location;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        if (location != null) {
+            log("经度：" + location.getLongitude() + "\n" + "纬度" + location.getLatitude());
+        }
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
     protected void onResume() {
@@ -67,7 +144,7 @@ public class MainActivity extends Activity {
         courses = GetAllCourses();
         Spinner mSpinner = (Spinner) findViewById(R.id.spinner);
         //connect adapter with data m
-        adapter = new SimpleAdapter(this, setForListView(courses), R.layout.simple_spinner, new String[] {"course"}, new int[] { R.id.spinnertextview});
+        adapter = new SimpleAdapter(this, setForListView(courses), R.layout.simple_spinner, new String[]{"course"}, new int[]{R.id.spinnertextview});
         mSpinner.setAdapter(adapter);
     }
 
@@ -101,7 +178,16 @@ public class MainActivity extends Activity {
         }
     }
 
-    public List GetAllCourses(){
+    private static void log(String msg) {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG, msg);
+    }
+
+    public List GetAllCourses() {
         dbHelper = new DataBaseOpenHelper(getApplicationContext());
         SQLiteDatabase mDB = dbHelper.getReadableDatabase();
         Course course;
@@ -109,7 +195,7 @@ public class MainActivity extends Activity {
         Cursor cursor = mDB.rawQuery("select * from " + DataBaseOpenHelper.COURSE_TABLE_NAME, null);
 
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             course = new Course();
             course.setId(cursor.getLong(0));
             course.setName(cursor.isNull(1) ? "" : cursor.getString(1));
@@ -125,13 +211,13 @@ public class MainActivity extends Activity {
         return courses;
     }
 
-    public List<Map<String, String>> setForListView(List<Course> c){
+    public List<Map<String, String>> setForListView(List<Course> c) {
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
         Map<String, String> map;
 
-        for(int i=0; i< c.size(); i++){
+        for (int i = 0; i < c.size(); i++) {
             map = new HashMap<String, String>();
-            map.put("id",Long.toString((c.get(i)).getId()));
+            map.put("id", Long.toString((c.get(i)).getId()));
             map.put("course", (c.get(i)).getName());
             list.add(map);
         }
