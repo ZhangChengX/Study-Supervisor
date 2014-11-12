@@ -25,10 +25,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.example.sunxinzi.keepstudy.LockScreenActivity">
         </activity>
 
+        <activity
+            android:name="com.example.sunxinzi.keepstudy.SettingActivity">
         </activity>
 
+        <activity
+            android:name="com.example.sunxinzi.keepstudy.ReportActivity">
         </activity>
 
 
