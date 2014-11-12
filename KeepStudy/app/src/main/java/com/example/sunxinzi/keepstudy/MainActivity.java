@@ -90,10 +90,12 @@ public class MainActivity extends Activity {
                 //go to setting Activity
                 Intent intentSetting = new Intent(getApplicationContext(), SettingActivity.class);
                 startActivity(intentSetting);
+                return true;
             case R.id.report:
                 //go to report Activity
                 Intent intentReport = new Intent(MainActivity.this, ReportActivity.class);
                 startActivity(intentReport);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

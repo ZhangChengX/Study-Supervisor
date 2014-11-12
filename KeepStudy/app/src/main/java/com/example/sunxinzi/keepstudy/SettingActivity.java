@@ -1,6 +1,5 @@
 package com.example.sunxinzi.keepstudy;
 
-
 import android.app.ListActivity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -37,35 +36,12 @@ public class SettingActivity extends ListActivity {
         getListView().setFooterDividersEnabled(true);
         TextView footerView = (TextView) getLayoutInflater().inflate(R.layout.footer_view, null);
         getListView().addFooterView(footerView);
-        courses = GetAllCourses();
-
-        //setting SimpleAdapter,create two textBoxs and one button for delete
-        adapter = new SimpleAdapter(this, setForListView(courses), R.layout.setting_course, new String[] {"course", "id"}, new int[] { R.id.course_name, R.id.course_id}) {
-
-            @Override
-            //For adding delete button listener
-            public View getView(final int position, View convertView, ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
-
-                Button button = (Button) v.findViewById(R.id.bt_del);
-                button.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        //Toast.makeText(SettingActivity.this, "DELETE!", Toast.LENGTH_SHORT).show();
-                        Object ob = getItem(position);
-                        HashMap<String, String> map = (HashMap<String, String>)ob;
-                        String id = map.get("id");
-                        DeleteCourse(id);
-
-                    }
-                });
-
-                return v;
-            }
-        };
-
-        setListAdapter(adapter);
+//        courses = GetAllCourses();
+//
+//        //setting SimpleAdapter,create two textBoxes and one button for delete
+//        adapter = SetViewAdapter(courses);
+//
+//        setListAdapter(adapter);
 
         footerView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,14 +53,20 @@ public class SettingActivity extends ListActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // TODO Auto-generated method stub
-                        if (editText.getText() == null || editText.getText().toString() == "") {
+                        if (editText.getText() == null || editText.getText().toString().equals("")) {
                             Toast.makeText(SettingActivity.this, "Please input a eligible course name!", Toast.LENGTH_SHORT).show();
-                            return;
                         }
-                        course = new Course();
-                        course.setName(editText.getText().toString());
+                        else {
+                            course = new Course();
+                            course.setName(editText.getText().toString());
 
-                        InsertCourse(course);
+                            InsertCourse(course);
+
+                            //reset view,the system should call onResume() automatically, but it doesn't!
+                            //So, here I call the onResume() manually to refresh the UI
+                            onResume();
+
+                        }
 
                     }
                 }).setNegativeButton("No", null).show();
@@ -95,10 +77,9 @@ public class SettingActivity extends ListActivity {
 
     protected void onResume() {
         super.onResume();
-    }
-
-    protected void onStart(){
-        super.onResume();
+        courses = GetAllCourses();
+        adapter = SetViewAdapter(courses);
+        setListAdapter(adapter);
     }
 
     public List GetAllCourses(){
@@ -167,6 +148,41 @@ public class SettingActivity extends ListActivity {
         return list;
     }
 
+    public SimpleAdapter SetViewAdapter(List<Course> course){
 
+       return new SimpleAdapter(this, setForListView(courses), R.layout.setting_course, new String[] {"course", "id"}, new int[] { R.id.course_name, R.id.course_id}) {
+
+            @Override
+            //For adding delete button listener
+            public View getView(final int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+
+                Button button = (Button) v.findViewById(R.id.bt_del);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        new AlertDialog.Builder(SettingActivity.this).setTitle("Delete this course?").setNegativeButton("No", null).
+                                setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String id = ((HashMap<String, String>) getItem(position)).get("id");
+                                        DeleteCourse(id);
+
+                                        //reset view,the system should call onResume() automatically, but it doesn't!
+                                        //So, here I call the onResume() manually to refresh the UI
+                                        onResume();
+                                    }
+                                }).show();
+
+
+
+                    }
+                });
+
+                return v;
+            }
+        };
+    }
 }
 
