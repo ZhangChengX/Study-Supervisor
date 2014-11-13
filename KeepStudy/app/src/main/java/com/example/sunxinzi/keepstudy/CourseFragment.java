@@ -86,18 +86,18 @@ public class CourseFragment extends Fragment {
         HashMap mHashMap = mReportHelper.getCourses();
         Iterator mIterator = mHashMap.entrySet().iterator();
         ArrayList mArrayListCourse = new ArrayList();
+        GraphView.GraphViewData mGraphViewData[] = new GraphView.GraphViewData[mHashMap.size()];
+        int i = 0;
         while (mIterator.hasNext()) {
             Map.Entry entry = (Map.Entry) mIterator.next();
             //Object key = entry.getKey();
             Course val = (Course) entry.getValue();
             mArrayListCourse.add(val.getName());
+            mGraphViewData[i] = new GraphView.GraphViewData(i+1, val.getGrade());
+            i++;
         }
         // set data
-        GraphViewSeries mGraphViewSeries = new GraphViewSeries(new GraphView.GraphViewData[] {
-                new GraphView.GraphViewData(1, 9),
-                new GraphView.GraphViewData(2, 8),
-                new GraphView.GraphViewData(3, 7)
-        });
+        GraphViewSeries mGraphViewSeries = new GraphViewSeries(mGraphViewData);
         // set title
         GraphView graphView = new BarGraphView(
                 getActivity()
