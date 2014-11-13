@@ -38,6 +38,8 @@
         </activity>
 
 
+        <activity android:name="com.example.sunxinzi.keepstudy.CourseActivity"></activity>
+
     </application>
 
 </manifest>

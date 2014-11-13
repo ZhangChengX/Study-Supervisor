@@ -1,6 +1,10 @@
+
+
+
 package com.example.sunxinzi.keepstudy;
 
 import java.sql.Timestamp;
+
 import android.location.Location;
 
 /**
@@ -10,66 +14,124 @@ public class StudyInf {
 
     private long id;
 
-    private int courseId;
+    private long courseId;
 
-    private  String courseName;
+    private String courseName;
 
-    private Timestamp startTime;
+    private int startTimeHour;
+
+    private int startTimeMinute;
 
     private Timestamp endTime;
 
-    private float studyTimeLenth;
+    private float studyTimeLength;
 
-    private float plannedTimeLenth;
+    private float plannedTimeLength;
 
-    private  Location location;
+    private double longitude;
+
+    private double latitude;
 
     private String remark;
 
     public StudyInf() {
     }
 
-    public StudyInf(int courseId, String courseName, float plannedTimeLenth, Location location, String remark){
+    public StudyInf(long courseId, String courseName, int startTimeHour, int startTimeMinute, double longitude, double latitude, String remark) {
         this.courseId = courseId;
         this.courseName = courseName;
-        this.plannedTimeLenth = plannedTimeLenth;
-        this.location = location;
+        this.startTimeHour = startTimeHour;
+        this.startTimeMinute = startTimeMinute;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.remark = remark;
     }
 
-    public long getId(){return id;}
+    public long getId() {
+        return id;
+    }
 
-    public void setId(long id){this.id = id;}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public  int getCourseId(){return courseId;}
+    public long getCourseId() {
+        return courseId;
+    }
 
-    public void setCourseId(int courseId){this.courseId = courseId;}
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
+    }
 
-    public String getCourseName(){ return courseName;}
+    public String getCourseName() {
+        return courseName;
+    }
 
-    public void setCourseName() { this.courseName = courseName;}
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
 
-    public Timestamp getStartTime() {return startTime;}
+    public int getStartTimeHour() {
+        return startTimeHour;
+    }
 
-    public void setStartTime(Timestamp startTime) {this.startTime = startTime;}
+    public int getStartTimeMinute() {
+        return startTimeMinute;
+    }
 
-    public Timestamp getEndTime(){return endTime;}
+    public void setStartTimeHour(int startTimeHour) {
+        this.startTimeHour = startTimeHour;
+    }
 
-    public void setEndTime(Timestamp endTime){this.endTime = endTime;}
+    public void setStartTimeMinute(int startTimeMinute) {
+        this.startTimeMinute = startTimeMinute;
+    }
 
-    public float getStudyTimeLenth(){return  studyTimeLenth;}
+    public Timestamp getEndTime() {
+        return endTime;
+    }
 
-    public void setStudyTimeLenth(float studyTimeLenth){this.studyTimeLenth = studyTimeLenth;}
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
 
-    public float getPlannedTimeLenth(){return plannedTimeLenth;}
+    public float getStudyTimeLength() {
+        return studyTimeLength;
+    }
 
-    public void setPlannedTimeLenth(float plannedTimeLenth){this.plannedTimeLenth = plannedTimeLenth;}
+    public void setStudyTimeLength(float studyTimeLength) {
+        this.studyTimeLength = studyTimeLength;
+    }
 
-    public Location getLocation(){return location;}
+    public float getPlannedTimeLength() {
+        return plannedTimeLength;
+    }
 
-    public void setLocation(Location location){this.location = location;}
+    public void setPlannedTimeLength(float plannedTimeLength) {
+        this.plannedTimeLength = plannedTimeLength;
+    }
 
-    public String getRemark(){return remark;}
+    public double getLongitude() {
+        return longitude;
+    }
 
-    public void setRemark(String remark){this.remark = remark;}
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 }
