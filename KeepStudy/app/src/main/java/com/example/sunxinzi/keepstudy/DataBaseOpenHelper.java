@@ -36,12 +36,12 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper {
     }
 
     private static final String COURSE_TABLE_CREATE = "create table " + COURSE_TABLE_NAME + " (" +
-            CourseInf.ID + " INTEGER primary key," +
+            CourseInf.ID + " INTEGER primary key autoincrement," +
             CourseInf.COURSE_NAME + " text, " +
             CourseInf.GRADE + " int, " +
             CourseInf.REMARK + " text);";
     private static final String STUDY_RECORDS_TABLE_CREATE = "create table " + STUDY_TABLE_NAME + "(" +
-            StudyInf.ID + " INTEGER primary key," +
+            StudyInf.ID + " INTEGER primary key autoincrement," +
             StudyInf.COURSE_ID + " int, " +
             StudyInf.COURSE_NAME + " text, " +
             StudyInf.START_TIME + " timestamp, " +
