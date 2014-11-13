@@ -27,8 +27,8 @@ public class ReportHelper {
     /**
      * get all courses and grades, return HashMap
      */
-    public Map getCourses() {
-        Map mHashMap = new HashMap();
+    public HashMap getCourses() {
+        HashMap mHashMap = new HashMap();
         dbHelper = new DataBaseOpenHelper(this.context);
         db = dbHelper.getReadableDatabase();
         String sql = "select * from " + DataBaseOpenHelper.COURSE_TABLE_NAME;
@@ -36,10 +36,10 @@ public class ReportHelper {
         Cursor cursor = db.rawQuery(sql, null);
         while (cursor.moveToNext()) {
             Course course =  new Course();
-            course.setId(cursor.getColumnIndex("_id"));
+            course.setId(cursor.getLong(0));
             course.setName(cursor.getString(cursor.getColumnIndex("course_name")));
             course.setGrade(cursor.getColumnIndex("grade"));
-            mHashMap.put(cursor.getColumnIndex("_id"), course);
+            mHashMap.put(cursor.getLong(0), course);
         }
         return mHashMap;
     }

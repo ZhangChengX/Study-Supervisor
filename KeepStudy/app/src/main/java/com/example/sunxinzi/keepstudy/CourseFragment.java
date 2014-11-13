@@ -1,6 +1,7 @@
 package com.example.sunxinzi.keepstudy;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -8,9 +9,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.jjoe64.graphview.BarGraphView;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GraphViewDataInterface;
+import com.jjoe64.graphview.GraphViewSeries;
+import com.jjoe64.graphview.ValueDependentColor;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 
@@ -71,17 +81,35 @@ public class CourseFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_course, container, false);
 
-        // chart
+        // get courses
         ReportHelper mReportHelper = new ReportHelper(getActivity());
-        Map mHashMap = mReportHelper.getCourses();
-        Iterator iter = mHashMap.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry entry = (Map.Entry) iter.next();
-            Object key = entry.getKey();
-            Object val = entry.getValue();
-            //Log.i("log", key.toString());
-            //Log.i("log", val.name);
+        HashMap mHashMap = mReportHelper.getCourses();
+        Iterator mIterator = mHashMap.entrySet().iterator();
+        ArrayList mArrayListCourse = new ArrayList();
+        while (mIterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) mIterator.next();
+            //Object key = entry.getKey();
+            Course val = (Course) entry.getValue();
+            mArrayListCourse.add(val.getName());
         }
+        // set data
+        GraphViewSeries mGraphViewSeries = new GraphViewSeries(new GraphView.GraphViewData[] {
+                new GraphView.GraphViewData(1, 9),
+                new GraphView.GraphViewData(2, 8),
+                new GraphView.GraphViewData(3, 7)
+        });
+        // set title
+        GraphView graphView = new BarGraphView(
+                getActivity()
+                , "Course Grade"
+        );
+        //
+        graphView.setHorizontalLabels((String[])mArrayListCourse.toArray(new String[mArrayListCourse.size()]));
+        // add data to Chart
+        graphView.addSeries(mGraphViewSeries);
+        LinearLayout layout = (LinearLayout) view.findViewById(R.id.linearLayoutFragmentCourse);
+        layout.addView(graphView);
+
         return view;
     }
 
