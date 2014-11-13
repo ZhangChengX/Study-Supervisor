@@ -173,7 +173,7 @@ public static Location getLocation(Context context) {
     public void onLocationChanged(Location location) {
 
         if (location != null) {
-            log("经度：" + location.getLongitude() + "\n" + "纬度：" + location.getLatitude());
+            log("Longitude:" + location.getLongitude() + "\n" + "Latitude:" + location.getLatitude());
         }
 
     }
