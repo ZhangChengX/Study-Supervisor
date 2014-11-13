@@ -40,21 +40,29 @@ public class MainActivity extends Activity implements LocationListener {
     private SimpleAdapter adapter;
     private DataBaseOpenHelper dbHelper;
     private List<Course> courses;
+    StudyInf studyInf;
 
     private LocationManager mLocationManager;
     private Location mLocation;
+
+    String courseName;
+    long courseId;
     double longitude;
     double latitude;
+    int hour;
+    int minute;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         final TimePicker mTimePicker = (TimePicker) findViewById(R.id.timePicker);
         mTimePicker.setIs24HourView(true);
-        Button mButton = (Button) findViewById(R.id.button);
+        mTimePicker.setCurrentHour(1);
+        mTimePicker.setCurrentMinute(30);
 
+        final Button mButton = (Button) findViewById(R.id.button);
         mButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -64,15 +72,35 @@ public class MainActivity extends Activity implements LocationListener {
                     longitude = mLocation.getLongitude();
                     latitude = mLocation.getLatitude();
                     log("Longitude: " + longitude + "\n" + "Latitude: " + latitude);
+
                 } else {
                     log("No available location found.");
+                    longitude = 0;
+                    latitude = 0;
                 }
 
-                Toast.makeText(MainActivity.this, mTimePicker.getCurrentHour() + ":" + mTimePicker.getCurrentMinute()
-                        , Toast.LENGTH_LONG).show();
-                if ((mTimePicker.getCurrentHour() == 0) && (mTimePicker.getCurrentMinute() == 0)) {
+                hour = mTimePicker.getCurrentHour();
+                minute = mTimePicker.getCurrentMinute();
+
+                //Toast.makeText(MainActivity.this, mTimePicker.getCurrentHour() + ":" + mTimePicker.getCurrentMinute()
+                //        , Toast.LENGTH_LONG).show();
+                if ((hour == 0) && (minute == 0)) {
                     Toast.makeText(MainActivity.this, "Please set the timer first!", Toast.LENGTH_LONG).show();
                 } else {
+                    Toast.makeText(MainActivity.this, mTimePicker.getCurrentHour() + ":" + mTimePicker.getCurrentMinute(), Toast.LENGTH_LONG).show();
+
+                    studyInf = new StudyInf();
+                    studyInf.setCourseId(courseId);
+                    studyInf.setCourseName(courseName);
+                    studyInf.setStartTimeHour(hour);
+                    studyInf.setStartTimeMinute(minute);
+                    studyInf.setLongitude(longitude);
+                    studyInf.setLatitude(latitude);
+                    InsertStudyIfo(studyInf);
+
+                    log(TAG + "--------" + "course name: " + courseName + "\n" + "course id" + courseId + "\n" + "hour: " + hour + "\n" +
+                            "minute " + minute + "\n" + "longitude: " + longitude + "\n" + "latitude: " + latitude);
+
                     Intent intentLockScreen = new Intent(MainActivity.this, LockScreenActivity.class);
                     startActivity(intentLockScreen);
                 }
@@ -83,7 +111,37 @@ public class MainActivity extends Activity implements LocationListener {
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 10, this);
         //mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, this);
-        mLocation = getLocation(MainActivity.this);
+        mLocation = getLocation(getApplicationContext());
+
+    }
+
+    protected void onResume() {
+        super.onResume();
+
+        //show the courses after user add or del course form setting view
+        //keep the course data fresh
+        courses = GetAllCourses();
+        final Spinner mSpinner = (Spinner) findViewById(R.id.spinner);
+        //connect adapter with data m
+        adapter = new SimpleAdapter(this, setForListView(courses), R.layout.simple_spinner,
+                new String[]{"course"}, new int[]{R.id.spinnertextview});
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                courseName = courses.get(position).getName();
+                courseId = courses.get(position).getId();
+
+                log(TAG + "-------" + "course Name: " + courseName);
+                parent.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
@@ -103,7 +161,6 @@ public class MainActivity extends Activity implements LocationListener {
         //if (location == null) {
         //    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
         //}
-        log(TAG + "------location: " + location);
         return location;
     }
 
@@ -111,7 +168,7 @@ public class MainActivity extends Activity implements LocationListener {
     public void onLocationChanged(Location location) {
 
         if (location != null) {
-            log("经度：" + location.getLongitude() + "\n" + "纬度" + location.getLatitude());
+            log("经度：" + location.getLongitude() + "\n" + "纬度：" + location.getLatitude());
         }
 
     }
@@ -131,25 +188,12 @@ public class MainActivity extends Activity implements LocationListener {
 
     }
 
-    protected void onResume() {
-        super.onResume();
-
-        //show the courses after user add or del course form setting view
-        //keep the course data fresh
-        courses = GetAllCourses();
-        Spinner mSpinner = (Spinner) findViewById(R.id.spinner);
-        //connect adapter with data m
-        adapter = new SimpleAdapter(this, setForListView(courses), R.layout.simple_spinner, new String[]{"course"}, new int[]{R.id.spinnertextview});
-        mSpinner.setAdapter(adapter);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -162,22 +206,16 @@ public class MainActivity extends Activity implements LocationListener {
                 //go to setting Activity
                 Intent intentSetting = new Intent(getApplicationContext(), SettingActivity.class);
                 startActivity(intentSetting);
+                break;
             case R.id.report:
                 //go to report Activity
                 Intent intentReport = new Intent(MainActivity.this, ReportActivity.class);
                 startActivity(intentReport);
+                break;
             default:
-                return super.onOptionsItemSelected(item);
+                break;
         }
-    }
-
-    private static void log(String msg) {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.i(TAG, msg);
+        return super.onOptionsItemSelected(item);
     }
 
     public List GetAllCourses() {
@@ -204,6 +242,16 @@ public class MainActivity extends Activity implements LocationListener {
         return courses;
     }
 
+    public void InsertStudyIfo(StudyInf studyInf) {
+        dbHelper = new DataBaseOpenHelper(MainActivity.this);
+        SQLiteDatabase mDB = dbHelper.getWritableDatabase();
+        mDB.execSQL("INSERT INTO " + DataBaseOpenHelper.STUDY_TABLE_NAME +
+                        "(c_id, c_name, start_time_hour, start_time_minute, longitude, latitude, remark) VALUES(?, ?, ?, ?, ?, ?, ?)",
+                new Object[]{studyInf.getCourseId(), studyInf.getCourseName(), studyInf.getStartTimeHour(),
+                        studyInf.getStartTimeMinute(), studyInf.getLongitude(), studyInf.getLatitude(), studyInf.getRemark()});
+        mDB.close();
+    }
+
     public List<Map<String, String>> setForListView(List<Course> c) {
         List<Map<String, String>> list = new ArrayList<Map<String, String>>();
         Map<String, String> map;
@@ -216,5 +264,14 @@ public class MainActivity extends Activity implements LocationListener {
         }
 
         return list;
+    }
+
+    private static void log(String msg) {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG, msg);
     }
 }

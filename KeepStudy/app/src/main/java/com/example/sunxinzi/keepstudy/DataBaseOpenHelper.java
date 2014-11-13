@@ -11,25 +11,64 @@ import android.util.Log;
 public class DataBaseOpenHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "myDB.db";
     private static final int DATABASE_VERSION = 2;
-    private static final String COURSE_TABLE_CREATE = "create table Course (ID int NOT NULL primary key autoincrement,course_name text, grade int, remark text);";
-    private static final String STUDY_RECORDS_TABLE_CREATE = "create table Study(ID int NOT NULL primary key autoincrement," +
-            "c_id int, c_name text, start_time  timestamp, end_time timestamp, " +
-            "study_time_length REAL, planned_time_length REAL, " +
-            "latitude real, longitude real, remark text)";
 
-    DataBaseOpenHelper(Context context){
-        super(context,DATABASE_NAME,null, DATABASE_VERSION);
+    public static final String COURSE_TABLE_NAME = "Course";
+    public static final String STUDY_TABLE_NAME = "Study";
+
+    public static class CourseInf {
+        public static String ID = "_id";
+        public static String COURSE_NAME = "course_name";
+        public static String GRADE = "grade";
+        public static String REMARK = "remark";
     }
 
-    public void onCreate(SQLiteDatabase db){
-        try{
+    public static class StudyInf {
+        public static String ID = "_id";
+        public static String COURSE_ID = "c_id";
+        public static String COURSE_NAME = "c_name";
+        public static String START_TIME_Hour = "start_time_hour";
+        public static String START_TIME_Minute = "start_time_minute";
+        public static String END_TIME = "end_time";
+        public static String STUDY_TIME_LENGTH = "study_time_length";
+        public static String PLANNED_TIME_LENGTH = "planned_time_length";
+        public static String LATITUDE = "latitude";
+        public static String LONGITUDE = "longitude";
+        public static String REMARK = "remark";
+    }
+
+    private static final String COURSE_TABLE_CREATE = "create table " + COURSE_TABLE_NAME + " (" +
+            CourseInf.ID + " INTEGER primary key," +
+            CourseInf.COURSE_NAME + " text, " +
+            CourseInf.GRADE + " int, " +
+            CourseInf.REMARK + " text);";
+    private static final String STUDY_RECORDS_TABLE_CREATE = "create table " + STUDY_TABLE_NAME + "(" +
+            StudyInf.ID + " INTEGER primary key," +
+            StudyInf.COURSE_ID + " int, " +
+            StudyInf.COURSE_NAME + " text, " +
+            StudyInf.START_TIME_Hour + " int, " +
+            StudyInf.START_TIME_Minute + " int, " +
+            StudyInf.END_TIME + " timestamp, " +
+            StudyInf.STUDY_TIME_LENGTH + " REAL, " +
+            StudyInf.PLANNED_TIME_LENGTH + " REAL, " +
+            StudyInf.LATITUDE + " real, " +
+            StudyInf.LONGITUDE + " real, " +
+            StudyInf.REMARK + " text)";
+
+    DataBaseOpenHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public void onCreate(SQLiteDatabase db) {
+        try {
             db.execSQL(COURSE_TABLE_CREATE);
             db.execSQL(STUDY_RECORDS_TABLE_CREATE);
-        }catch (android.database.SQLException e) {
+        } catch (android.database.SQLException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void onUpgrade(SQLiteDatabase db,int i, int j){};
+    public void onUpgrade(SQLiteDatabase db, int i, int j) {
+    }
+
 }

@@ -8,4 +8,6 @@
     <string name="setting">Setting</string>
     <string name="report">Report</string>
 
+    <string name="footer_text">+add course+</string>
+
 </resources>
