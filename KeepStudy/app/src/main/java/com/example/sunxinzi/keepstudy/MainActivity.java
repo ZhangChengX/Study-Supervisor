@@ -1,7 +1,9 @@
 package com.example.sunxinzi.keepstudy;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -83,25 +85,61 @@ public class MainActivity extends Activity implements LocationListener {
 
                 //Toast.makeText(MainActivity.this, mTimePicker.getCurrentHour() + ":" + mTimePicker.getCurrentMinute()
                 //        , Toast.LENGTH_LONG).show();
-                if ((hour == 0) && (minute == 0)) {
+                if (courseName == null) {
+
+                    Toast.makeText(MainActivity.this, "Please choose the course!", Toast.LENGTH_LONG).show();
+
+                } else if ((hour == 0) && (minute == 0)) {
+
                     Toast.makeText(MainActivity.this, "Please set the timer first!", Toast.LENGTH_LONG).show();
+
                 } else {
-                    Toast.makeText(MainActivity.this, mTimePicker.getCurrentHour() + ":" + mTimePicker.getCurrentMinute(), Toast.LENGTH_LONG).show();
 
-                    studyInf = new StudyInf();
-                    studyInf.setCourseId(courseId);
-                    studyInf.setCourseName(courseName);
-                    studyInf.setStartTimeHour(hour);
-                    studyInf.setStartTimeMinute(minute);
-                    studyInf.setLongitude(longitude);
-                    studyInf.setLatitude(latitude);
-                    InsertStudyIfo(studyInf);
+                    AlertDialog.Builder build = new AlertDialog.Builder(
+                            MainActivity.this)
+                            .setTitle("Start Confirm")
+                            .setMessage("Do you want to start learning?")
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setNegativeButton("Cancel",
+                                    new DialogInterface.OnClickListener() {
 
-                    log(TAG + "--------" + "course name: " + courseName + "\n" + "course id" + courseId + "\n" + "hour: " + hour + "\n" +
-                            "minute " + minute + "\n" + "longitude: " + longitude + "\n" + "latitude: " + latitude);
+                                        @Override
+                                        public void onClick(DialogInterface arg0,
+                                                            int arg1) {
+                                            // TODO Auto-generated method stub
+                                            arg0.dismiss();
+                                        }
+                                    })
+                            .setPositiveButton("Comfirm",
+                                    new DialogInterface.OnClickListener() {
 
-                    Intent intentLockScreen = new Intent(MainActivity.this, LockScreenActivity.class);
-                    startActivity(intentLockScreen);
+                                        @Override
+                                        public void onClick(DialogInterface dialog,
+                                                            int which) {
+                                            // TODO Auto-generated method stub
+                                            dialog.dismiss();
+
+                                            Toast.makeText(MainActivity.this, mTimePicker.getCurrentHour() + ":" + mTimePicker.getCurrentMinute(), Toast.LENGTH_LONG).show();
+
+                                            studyInf = new StudyInf();
+                                            studyInf.setCourseId(courseId);
+                                            studyInf.setCourseName(courseName);
+                                            studyInf.setStartTimeHour(hour);
+                                            studyInf.setStartTimeMinute(minute);
+                                            studyInf.setLongitude(longitude);
+                                            studyInf.setLatitude(latitude);
+                                            InsertStudyIfo(studyInf);
+
+                                            log(TAG + "--------" + "course name: " + courseName + "\n" + "course id: " + courseId + "\n" + "hour: " + hour + "\n" +
+                                                    "minute: " + minute + "\n" + "longitude: " + longitude + "\n" + "latitude: " + latitude);
+
+                                            Intent intentLockScreen = new Intent(MainActivity.this, LockScreenActivity.class);
+                                            intentLockScreen.putExtra("hour", hour);
+                                            intentLockScreen.putExtra("minute", minute);
+                                            startActivity(intentLockScreen);
+                                        }
+                                    });
+                    build.show();
                 }
             }
         });
@@ -149,17 +187,18 @@ public class MainActivity extends Activity implements LocationListener {
     @Override
     protected void onPause() {
         super.onPause();
-		mLocationManager.removeUpdates(this);
+        mLocationManager.removeUpdates(this);
 
-		//show the courses after user add or del course form setting view
+        //show the courses after user add or del course form setting view
         //keep the course data fresh
         courses = GetAllCourses();
         Spinner mSpinner = (Spinner) findViewById(R.id.spinner);
         //connect adapter with data m
-        adapter = new SimpleAdapter(this, setForListView(courses), R.layout.simple_spinner, new String[] {"course"}, new int[] { R.id.spinnertextview});
+        adapter = new SimpleAdapter(this, setForListView(courses), R.layout.simple_spinner, new String[]{"course"}, new int[]{R.id.spinnertextview});
         mSpinner.setAdapter(adapter);
-	}
-public static Location getLocation(Context context) {
+    }
+
+    public static Location getLocation(Context context) {
         LocationManager locationManager = (LocationManager) context.
                 getSystemService(Context.LOCATION_SERVICE);
         Location location = locationManager.
@@ -212,11 +251,13 @@ public static Location getLocation(Context context) {
                 //go to setting Activity
                 Intent intentSetting = new Intent(getApplicationContext(), SettingActivity.class);
                 startActivity(intentSetting);
-				break;            case R.id.report:
+                break;
+            case R.id.report:
                 //go to report Activity
                 Intent intentReport = new Intent(MainActivity.this, ReportActivity.class);
                 startActivity(intentReport);
-				break;            default:
+                break;
+            default:
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -277,4 +318,5 @@ public static Location getLocation(Context context) {
             e.printStackTrace();
         }
         Log.i(TAG, msg);
-    }}
+    }
+}
