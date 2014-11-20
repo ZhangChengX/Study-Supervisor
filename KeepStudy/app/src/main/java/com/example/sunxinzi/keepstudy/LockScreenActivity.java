@@ -212,24 +212,20 @@ public class LockScreenActivity extends Activity {
     };
 
     //屏蔽掉Home键
-   /* @Override
+    @Override
     public void onAttachedToWindow() {
-        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+        if(android.os.Build.VERSION.SDK_INT< android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH){
+            this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);//À¯∆¡ ±œ‘ æµƒ∂‘ª∞øÚ
+        }
         super.onAttachedToWindow();
-    }   */
+    }
 
     //屏蔽掉Back键
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (event.getKeyCode() == KeyEvent.KEYCODE_HOME) {
-            return true;
-        } else if (event.getKeyCode() == KeyEvent.KEYCODE_BACK)
-            return super.onKeyDown(keyCode, event);
-        else {
-            return super.onKeyDown(keyCode, event);
-        }
-
+        if(event.getKeyCode() == KeyEvent.KEYCODE_BACK) return true ;
+        else return super.onKeyDown(keyCode, event);
     }
 
     private static void log(String msg) {

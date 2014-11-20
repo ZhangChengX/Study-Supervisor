@@ -22,7 +22,7 @@
         android:layout_width="fill_parent"
         android:layout_height="63dip"
         android:layout_gravity="center"
-        android:layout_marginTop="500dip"
+        android:layout_marginTop="450dip"
         android:background="@drawable/step2_tip_2">
         <!-- Lock OK icon  -->
 
