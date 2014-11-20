@@ -13,17 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SimpleAdapter;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import android.widget.ArrayAdapter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.database.sqlite.SQLiteOpenHelper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +59,9 @@ public class MainActivity extends Activity implements LocationListener {
         mTimePicker.setCurrentHour(1);
         mTimePicker.setCurrentMinute(30);
 
-        final Button mButton = (Button) findViewById(R.id.button);
+        final ImageButton mButton = (ImageButton)findViewById(R.id.ImageButton_start);
+        mButton.setBackground(getResources().getDrawable(R.drawable.play));
+        //final Button mButton = (Button) findViewById(R.id.button);
         mButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -122,6 +121,8 @@ public class MainActivity extends Activity implements LocationListener {
         //keep the course data fresh
         courses = GetAllCourses();
         final Spinner mSpinner = (Spinner) findViewById(R.id.spinner);
+        //Typeface tf = Typeface.createFromAsset(getAssets(), "DavysCrappyWrit.ttf");
+
         //connect adapter with data m
         adapter = new SimpleAdapter(this, setForListView(courses), R.layout.simple_spinner,
                 new String[]{"course"}, new int[]{R.id.spinnertextview});

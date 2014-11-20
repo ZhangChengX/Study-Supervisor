@@ -17,6 +17,7 @@ import android.app.AlertDialog;
 import android.widget.EditText;
 import android.content.DialogInterface;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 /**
  * Created by SunXinzi on 14/11/5.
@@ -157,7 +158,9 @@ public class SettingActivity extends ListActivity {
             public View getView(final int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
 
-                Button button = (Button) v.findViewById(R.id.bt_del);
+                ImageButton button = (ImageButton) v.findViewById(R.id.imageButton_del);
+                button.setBackground(getResources().getDrawable(R.drawable.circle_delete));
+
                 button.setOnClickListener(new View.OnClickListener() {
 
                     @Override
