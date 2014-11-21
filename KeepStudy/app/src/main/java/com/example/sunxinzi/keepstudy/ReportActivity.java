@@ -5,6 +5,9 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -33,6 +36,39 @@ public class ReportActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // add adapter into spinner
         spinner.setAdapter(adapter);
+        // listener
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                switch (i) {
+                    case 0:
+                        Log.i("Log", "Selected:" + i);
+                        fragmentTransaction.replace(R.id.fragmentContainer, new CourseFragment());
+                        fragmentTransaction.commit();
+                        break;
+                    case 1:
+                        Log.i("Log", "Selected:" + i);
+                        fragmentTransaction.replace(R.id.fragmentContainer, new TotalHoursFragment());
+                        fragmentTransaction.commit();
+                        break;
+                    case 2:
+                        Log.i("Log", "Selected:" + i);
+                        fragmentTransaction.replace(R.id.fragmentContainer, new StudiedLocationFragment());
+                        fragmentTransaction.commit();
+                        break;
+                    //default:
+                    //    Log.i("Log", "Default Selected");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 }

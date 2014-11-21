@@ -63,6 +63,7 @@ public class MainActivity extends Activity implements LocationListener {
 
         final ImageButton mButton = (ImageButton)findViewById(R.id.ImageButton_start);
         mButton.setBackground(getResources().getDrawable(R.drawable.play));
+
         //final Button mButton = (Button) findViewById(R.id.button);
         mButton.setOnClickListener(new View.OnClickListener() {
 

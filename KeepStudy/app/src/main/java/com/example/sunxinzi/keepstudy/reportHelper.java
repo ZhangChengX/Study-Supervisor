@@ -66,12 +66,24 @@ public class ReportHelper {
     }
 
     /**
-     *
-     * @param startDate
-     * @param endDate
+     * get total hours
+     * @return
      */
-    public void getTotalHours(String startDate, String endDate) {
-
+    public HashMap getTotalHours() {
+        HashMap mHashMap = new HashMap();
+        dbHelper = new DataBaseOpenHelper(this.context);
+        db = dbHelper.getReadableDatabase();
+        String sql = "select _id, c_name, sum(study_time_length) from " + DataBaseOpenHelper.STUDY_TABLE_NAME + " group by c_name";
+        Log.i("Log", sql);
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()) {
+            StudyInf studyInf =  new StudyInf();
+            studyInf.setId(cursor.getLong(0));
+            studyInf.setCourseName(cursor.getString(cursor.getColumnIndex("c_name")));
+            studyInf.setStudyTimeLength(cursor.getColumnIndex("study_time_length"));
+            mHashMap.put(cursor.getLong(0), studyInf);
+        }
+        return mHashMap;
     }
 
     /**
