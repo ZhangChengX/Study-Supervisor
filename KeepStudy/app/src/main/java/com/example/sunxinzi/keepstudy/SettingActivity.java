@@ -122,16 +122,24 @@ public class SettingActivity extends ListActivity {
     public void InsertCourse(Course course) {
         dbHelper = new DataBaseOpenHelper(SettingActivity.this);
         SQLiteDatabase mDB = dbHelper.getWritableDatabase();
+        try{
         mDB.execSQL("INSERT INTO " + DataBaseOpenHelper.COURSE_TABLE_NAME + "(course_name, grade, remark) VALUES(?, ?, ?)",
                 new Object[] { course.getName(), course.getName(), course.getRemark()});
+        }catch (android.database.SQLException e) {
+            e.printStackTrace();
+        }
         mDB.close();
     }
 
     public void UpdateCourse(Course course){
         dbHelper = new DataBaseOpenHelper(SettingActivity.this);
         SQLiteDatabase mDB = dbHelper.getWritableDatabase();
+        try{
         mDB.execSQL("UPDATE " + DataBaseOpenHelper.COURSE_TABLE_NAME + " SET course_name=?, grade=?, remark=? WHERE _id=?",
                 new Object[] {course.getName(), course.getGrade(), course.getRemark(), course.getId()});
+        }catch (android.database.SQLException e) {
+            e.printStackTrace();
+        }
         mDB.close();
     }
 

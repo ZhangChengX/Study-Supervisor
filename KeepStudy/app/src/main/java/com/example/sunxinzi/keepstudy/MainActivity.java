@@ -39,17 +39,18 @@ public class MainActivity extends Activity implements LocationListener {
     private SimpleAdapter adapter;
     private DataBaseOpenHelper dbHelper;
     private List<Course> courses;
-    StudyInf studyInf;
+
+    private StudyInf studyInf;
 
     private LocationManager mLocationManager;
     private Location mLocation;
 
-    String courseName;
-    long courseId;
-    double longitude;
-    double latitude;
-    int hour;
-    int minute;
+    private String courseName;
+    private long courseId;
+    private double longitude;
+    private double latitude;
+    private int hour;
+    private int minute;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -98,9 +99,9 @@ public class MainActivity extends Activity implements LocationListener {
                     AlertDialog.Builder build = new AlertDialog.Builder(
                             MainActivity.this)
                             .setTitle("Start Confirm")
-                            .setMessage("Do you want to start learning?")
+                            .setMessage("I swear to GOD! I will keep learning  and never touch my phone!")
                             .setIcon(android.R.drawable.ic_dialog_info)
-                            .setNegativeButton("Cancel",
+                            .setNegativeButton("No,I don't",
                                     new DialogInterface.OnClickListener() {
 
                                         @Override
@@ -110,7 +111,7 @@ public class MainActivity extends Activity implements LocationListener {
                                             arg0.dismiss();
                                         }
                                     })
-                            .setPositiveButton("Comfirm",
+                            .setPositiveButton("Yes, I do",
                                     new DialogInterface.OnClickListener() {
 
                                         @Override
@@ -121,6 +122,7 @@ public class MainActivity extends Activity implements LocationListener {
 
                                             Toast.makeText(MainActivity.this, mTimePicker.getCurrentHour() + ":" + mTimePicker.getCurrentMinute(), Toast.LENGTH_LONG).show();
 
+                                            //insert a new study inf into data base
                                             studyInf = new StudyInf();
                                             studyInf.setCourseId(courseId);
                                             studyInf.setCourseName(courseName);
@@ -290,10 +292,14 @@ public class MainActivity extends Activity implements LocationListener {
     public void InsertStudyIfo(StudyInf studyInf) {
         dbHelper = new DataBaseOpenHelper(MainActivity.this);
         SQLiteDatabase mDB = dbHelper.getWritableDatabase();
-        mDB.execSQL("INSERT INTO " + DataBaseOpenHelper.STUDY_TABLE_NAME +
-                        "(c_id, c_name, start_time_hour, start_time_minute, longitude, latitude, remark) VALUES(?, ?, ?, ?, ?, ?, ?)",
-                new Object[]{studyInf.getCourseId(), studyInf.getCourseName(), studyInf.getStartTimeHour(),
-                        studyInf.getStartTimeMinute(), studyInf.getLongitude(), studyInf.getLatitude(), studyInf.getRemark()});
+        try{
+            mDB.execSQL("INSERT INTO " + DataBaseOpenHelper.STUDY_TABLE_NAME +
+                    "(c_id, c_name, start_time_hour, start_time_minute, longitude, latitude, remark) VALUES(?, ?, ?, ?, ?, ?, ?)",
+                    new Object[]{studyInf.getCourseId(), studyInf.getCourseName(), studyInf.getStartTimeHour(),
+                    studyInf.getStartTimeMinute(), studyInf.getLongitude(), studyInf.getLatitude(), studyInf.getRemark()});
+        }catch (android.database.SQLException e) {
+            e.printStackTrace();
+        }
         mDB.close();
     }
 
