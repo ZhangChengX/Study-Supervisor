@@ -11,6 +11,12 @@
         android:id="@+id/spinnerReport"
         android:layout_gravity="center_horizontal" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/fragmentContainer"></FrameLayout>
+
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,5 +24,13 @@
         android:id="@+id/fragmentCourse"
         android:layout_gravity="center_horizontal"
         tools:layout="@layout/fragment_course" />
+
+    <!--<fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.sunxinzi.keepstudy.TotalHoursFragment"
+        android:id="@+id/fragmentTotalHours"
+        android:layout_gravity="center_horizontal"
+        tools:layout="@layout/fragment_total_hours" />-->
 
 </LinearLayout>
