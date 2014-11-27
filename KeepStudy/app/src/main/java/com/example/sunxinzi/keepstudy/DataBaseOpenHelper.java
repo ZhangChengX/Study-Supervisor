@@ -28,7 +28,9 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper {
         public static String COURSE_NAME = "c_name";
         public static String START_TIME_Hour = "start_time_hour";
         public static String START_TIME_Minute = "start_time_minute";
-        public static String END_TIME = "end_time";
+        public static String END_TIME_HOUR = "end_time_hour";
+        public static String END_TIME_MINUTE = "end_time_minute";
+        public static String END_TIME_SECOND = "end_time_second";
         public static String STUDY_TIME_LENGTH = "study_time_length";
         public static String PLANNED_TIME_LENGTH = "planned_time_length";
         public static String LATITUDE = "latitude";
@@ -47,7 +49,9 @@ public class DataBaseOpenHelper extends SQLiteOpenHelper {
             StudyInf.COURSE_NAME + " text, " +
             StudyInf.START_TIME_Hour + " int, " +
             StudyInf.START_TIME_Minute + " int, " +
-            StudyInf.END_TIME + " timestamp, " +
+            StudyInf.END_TIME_HOUR + " int, " +
+            StudyInf.END_TIME_MINUTE + " int, " +
+            StudyInf.END_TIME_SECOND + " int, " +
             StudyInf.STUDY_TIME_LENGTH + " REAL, " +
             StudyInf.PLANNED_TIME_LENGTH + " REAL, " +
             StudyInf.LATITUDE + " real, " +

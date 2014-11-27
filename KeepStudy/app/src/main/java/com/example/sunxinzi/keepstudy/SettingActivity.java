@@ -1,8 +1,10 @@
 package com.example.sunxinzi.keepstudy;
 
+import android.annotation.TargetApi;
 import android.app.ListActivity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -161,6 +163,7 @@ public class SettingActivity extends ListActivity {
 
        return new SimpleAdapter(this, setForListView(courses), R.layout.setting_course, new String[] {"course", "id"}, new int[] { R.id.course_name, R.id.course_id}) {
 
+            @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
             @Override
             //For adding delete button listener
             public View getView(final int position, View convertView, ViewGroup parent) {

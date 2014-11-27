@@ -1,5 +1,6 @@
 package com.example.sunxinzi.keepstudy;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +55,7 @@ public class MainActivity extends Activity implements LocationListener {
     private int hour;
     private int minute;
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +66,7 @@ public class MainActivity extends Activity implements LocationListener {
         mTimePicker.setCurrentHour(1);
         mTimePicker.setCurrentMinute(30);
 
-        final ImageButton mButton = (ImageButton)findViewById(R.id.ImageButton_start);
+        final ImageButton mButton = (ImageButton) findViewById(R.id.ImageButton_start);
         mButton.setBackground(getResources().getDrawable(R.drawable.play));
 
         //final Button mButton = (Button) findViewById(R.id.button);
@@ -124,21 +128,13 @@ public class MainActivity extends Activity implements LocationListener {
                                             Toast.makeText(MainActivity.this, mTimePicker.getCurrentHour() + ":" + mTimePicker.getCurrentMinute(), Toast.LENGTH_LONG).show();
 
                                             //insert a new study inf into data base
-                                            studyInf = new StudyInf();
-                                            studyInf.setCourseId(courseId);
-                                            studyInf.setCourseName(courseName);
-                                            studyInf.setStartTimeHour(hour);
-                                            studyInf.setStartTimeMinute(minute);
-                                            studyInf.setLongitude(longitude);
-                                            studyInf.setLatitude(latitude);
-                                            InsertStudyIfo(studyInf);
-
-                                            log(TAG + "--------" + "course name: " + courseName + "\n" + "course id: " + courseId + "\n" + "hour: " + hour + "\n" +
-                                                    "minute: " + minute + "\n" + "longitude: " + longitude + "\n" + "latitude: " + latitude);
-
                                             Intent intentLockScreen = new Intent(MainActivity.this, LockScreenActivity.class);
-                                            intentLockScreen.putExtra("hour", hour);
-                                            intentLockScreen.putExtra("minute", minute);
+                                            intentLockScreen.putExtra("courseId", courseId);
+                                            intentLockScreen.putExtra("courseName", courseName);
+                                            intentLockScreen.putExtra("startHour", hour);
+                                            intentLockScreen.putExtra("startMinute", minute);
+                                            intentLockScreen.putExtra("longitude", longitude);
+                                            intentLockScreen.putExtra("latitude", latitude);
                                             startActivity(intentLockScreen);
                                         }
                                     });
@@ -288,20 +284,6 @@ public class MainActivity extends Activity implements LocationListener {
         mDB.close();
 
         return courses;
-    }
-
-    public void InsertStudyIfo(StudyInf studyInf) {
-        dbHelper = new DataBaseOpenHelper(MainActivity.this);
-        SQLiteDatabase mDB = dbHelper.getWritableDatabase();
-        try{
-            mDB.execSQL("INSERT INTO " + DataBaseOpenHelper.STUDY_TABLE_NAME +
-                    "(c_id, c_name, start_time_hour, start_time_minute, longitude, latitude, remark) VALUES(?, ?, ?, ?, ?, ?, ?)",
-                    new Object[]{studyInf.getCourseId(), studyInf.getCourseName(), studyInf.getStartTimeHour(),
-                    studyInf.getStartTimeMinute(), studyInf.getLongitude(), studyInf.getLatitude(), studyInf.getRemark()});
-        }catch (android.database.SQLException e) {
-            e.printStackTrace();
-        }
-        mDB.close();
     }
 
     public List<Map<String, String>> setForListView(List<Course> c) {

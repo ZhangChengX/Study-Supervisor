@@ -22,7 +22,11 @@ public class StudyInf {
 
     private int startTimeMinute;
 
-    private Timestamp endTime;
+    private int endTimeHour;
+
+    private int endTimeMinute;
+
+    private int endTimeSecond;
 
     private float studyTimeLength;
 
@@ -37,11 +41,15 @@ public class StudyInf {
     public StudyInf() {
     }
 
-    public StudyInf(long courseId, String courseName, int startTimeHour, int startTimeMinute, double longitude, double latitude, String remark) {
+    public StudyInf(long courseId, String courseName, int startTimeHour, int startTimeMinute, int endTimeHour, int endTimeMinute, int endTimeSecond, float studyTimeLength, double longitude, double latitude, String remark) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.startTimeHour = startTimeHour;
         this.startTimeMinute = startTimeMinute;
+        this.endTimeHour = endTimeHour;
+        this.endTimeMinute = endTimeMinute;
+        this.endTimeSecond = endTimeSecond;
+        this.studyTimeLength = studyTimeLength;
         this.longitude = longitude;
         this.latitude = latitude;
         this.remark = remark;
@@ -87,12 +95,28 @@ public class StudyInf {
         this.startTimeMinute = startTimeMinute;
     }
 
-    public Timestamp getEndTime() {
-        return endTime;
+    public int getEndTimeHour() {
+        return endTimeHour;
     }
 
-    public void setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
+    public int getEndTimeMinute() {
+        return endTimeMinute;
+    }
+
+    public int getEndTimeSecond() {
+        return endTimeSecond;
+    }
+
+    public void setEndTimeHour(int endTimeHour) {
+        this.endTimeHour = endTimeHour;
+    }
+
+    public void setEndTimeMinute(int endTimeMinute) {
+        this.endTimeMinute = endTimeMinute;
+    }
+
+    public void setEndTimeSecond(int endTimeSecond) {
+        this.endTimeSecond = endTimeSecond;
     }
 
     public float getStudyTimeLength() {
