@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 
@@ -72,36 +75,28 @@ public class TotalHoursFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_total_hours, container, false);
 
-        // get courses
+        // get total hours
         ReportHelper mReportHelper = new ReportHelper(getActivity());
         HashMap mHashMap = mReportHelper.getTotalHours();
+        // prepare data for listview
+        List<HashMap<String,Object>> data = new ArrayList<HashMap<String,Object>>();
         Iterator mIterator = mHashMap.entrySet().iterator();
-        ArrayList mArrayListStudy = new ArrayList();
-        /*
-        GraphView.GraphViewData mGraphViewData[] = new GraphView.GraphViewData[mHashMap.size()];
-        int i = 0;
         while (mIterator.hasNext()) {
             Map.Entry entry = (Map.Entry) mIterator.next();
-            //Object key = entry.getKey();
-            StudyInf study = (StudyInf) entry.getValue();
-            mArrayListStudy.add(study.getCourseName());
-            mGraphViewData[i] = new GraphView.GraphViewData(i+1, study.getStudyTimeLength());
-            i++;
+            StudyInf course = (StudyInf) entry.getValue();
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("CourseName",course.getCourseName());
+            map.put("TimeLength", course.getStudyTimeLength());
+            data.add(map);
         }
-        // set data
-        GraphViewSeries mGraphViewSeries = new GraphViewSeries(mGraphViewData);
-        // set title
-        GraphView graphView = new BarGraphView(
-                getActivity()
-                , "Total Hours of Studied"
-        );
-        //
-        graphView.setHorizontalLabels((String[])mArrayListStudy.toArray(new String[mArrayListStudy.size()]));
-        // add data to Chart
-        graphView.addSeries(mGraphViewSeries);
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.linearLayoutFragmentCourse);
-        layout.addView(graphView);
-        */
+        // listview
+        ListView mListView = (ListView) view.findViewById(R.id.listViewTotalHours);
+        SimpleAdapter mSimpleAdapter = new SimpleAdapter(getActivity(),
+                data,
+                R.layout.listview_item,
+                new String[]{"CourseName","TimeLength"},
+                new int[]{R.id.textViewCourseName, R.id.textViewCourseValue});
+        mListView.setAdapter(mSimpleAdapter);
         return view;
     }
 

@@ -1,22 +1,41 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.sunxinzi.keepstudy.CourseFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    android:padding="10dp">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|top"
-        android:id="@+id/linearLayoutFragmentCourse">
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="#ffededed">
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/listView"
-            android:layout_gravity="center_horizontal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Course Name"
+            android:id="@+id/textViewCourseNameTitle"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:autoText="false"
+            android:singleLine="false"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Grade"
+            android:id="@+id/textViewCourseValueTitle"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textStyle="bold" />
     </LinearLayout>
 
-</FrameLayout>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewCourse"
+        android:gravity="center" />
+
+</LinearLayout>

@@ -88,7 +88,7 @@ public class ReportHelper {
     }
 
     /**
-     * get location set from DB
+     *
      */
     public HashMap getLocationSet() {
         HashMap mHashMap = new HashMap();
@@ -110,11 +110,7 @@ public class ReportHelper {
         return mHashMap;
     }
 
-    /**
-     * to build a webpage according to google map JS API v3
-     * @param location
-     * @return
-     */
+
     public String buildGoogleMap(HashMap location) {
         String marker = "";
         String myLatlng = "";

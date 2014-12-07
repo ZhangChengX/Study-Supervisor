@@ -7,11 +7,15 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -74,7 +78,25 @@ public class CourseFragment extends Fragment {
         // get courses
         ReportHelper mReportHelper = new ReportHelper(getActivity());
         HashMap mHashMap = mReportHelper.getCourses();
-        
+        // prepare data for listview
+        List<HashMap<String,Object>> data = new ArrayList<HashMap<String,Object>>();
+        Iterator mIterator = mHashMap.entrySet().iterator();
+        while (mIterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) mIterator.next();
+            Course course = (Course) entry.getValue();
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("CourseName",course.getName());
+            map.put("Grade", course.getGrade());
+            data.add(map);
+        }
+        // listview
+        ListView mListView = (ListView) view.findViewById(R.id.listViewCourse);
+        SimpleAdapter mSimpleAdapter = new SimpleAdapter(getActivity(),
+                data,
+                R.layout.listview_item,
+                new String[]{"CourseName","Grade"},
+                new int[]{R.id.textViewCourseName, R.id.textViewCourseValue});
+        mListView.setAdapter(mSimpleAdapter);
         return view;
     }
 
