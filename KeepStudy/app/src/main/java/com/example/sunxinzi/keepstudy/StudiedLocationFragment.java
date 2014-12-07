@@ -7,6 +7,9 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+
+import java.util.HashMap;
 
 
 /**
@@ -64,7 +67,16 @@ public class StudiedLocationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_studied_location, container, false);
+        View view = inflater.inflate(R.layout.fragment_studied_location, container, false);
+        // get location set
+        final ReportHelper mReportHelper = new ReportHelper(getActivity());
+        HashMap mHashMap = mReportHelper.getLocationSet();
+        // prepare data for webview
+        WebView mWebView = (WebView) view.findViewById(R.id.webView);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        String html = mReportHelper.buildGoogleMap(mHashMap);
+        mWebView.loadData(html, "text/html", null);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

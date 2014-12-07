@@ -1,27 +1,17 @@
 package com.example.sunxinzi.keepstudy;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-
-import com.jjoe64.graphview.BarGraphView;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GraphViewDataInterface;
-import com.jjoe64.graphview.GraphViewSeries;
-import com.jjoe64.graphview.ValueDependentColor;
+import android.webkit.WebView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -84,32 +74,7 @@ public class CourseFragment extends Fragment {
         // get courses
         ReportHelper mReportHelper = new ReportHelper(getActivity());
         HashMap mHashMap = mReportHelper.getCourses();
-        Iterator mIterator = mHashMap.entrySet().iterator();
-        ArrayList mArrayListCourse = new ArrayList();
-        GraphView.GraphViewData mGraphViewData[] = new GraphView.GraphViewData[mHashMap.size()];
-        int i = 0;
-        while (mIterator.hasNext()) {
-            Map.Entry entry = (Map.Entry) mIterator.next();
-            //Object key = entry.getKey();
-            Course val = (Course) entry.getValue();
-            mArrayListCourse.add(val.getName());
-            mGraphViewData[i] = new GraphView.GraphViewData(i+1, val.getGrade());
-            i++;
-        }
-        // set data
-        GraphViewSeries mGraphViewSeries = new GraphViewSeries(mGraphViewData);
-        // set title
-        GraphView graphView = new BarGraphView(
-                getActivity()
-                , "Course Grade"
-        );
-        //
-        graphView.setHorizontalLabels((String[])mArrayListCourse.toArray(new String[mArrayListCourse.size()]));
-        // add data to Chart
-        graphView.addSeries(mGraphViewSeries);
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.linearLayoutFragmentCourse);
-        layout.addView(graphView);
-
+        
         return view;
     }
 

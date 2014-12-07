@@ -9,10 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.jjoe64.graphview.BarGraphView;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GraphViewSeries;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -81,6 +77,7 @@ public class TotalHoursFragment extends Fragment {
         HashMap mHashMap = mReportHelper.getTotalHours();
         Iterator mIterator = mHashMap.entrySet().iterator();
         ArrayList mArrayListStudy = new ArrayList();
+        /*
         GraphView.GraphViewData mGraphViewData[] = new GraphView.GraphViewData[mHashMap.size()];
         int i = 0;
         while (mIterator.hasNext()) {
@@ -104,7 +101,7 @@ public class TotalHoursFragment extends Fragment {
         graphView.addSeries(mGraphViewSeries);
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.linearLayoutFragmentCourse);
         layout.addView(graphView);
-
+        */
         return view;
     }
 
