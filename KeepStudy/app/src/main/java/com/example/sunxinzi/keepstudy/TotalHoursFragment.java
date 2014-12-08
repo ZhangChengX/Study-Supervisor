@@ -86,7 +86,7 @@ public class TotalHoursFragment extends Fragment {
             StudyInf course = (StudyInf) entry.getValue();
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("CourseName",course.getCourseName());
-            map.put("TimeLength", course.getStudyTimeLength());
+            map.put("TimeLength", mReportHelper.formatTime(course.getStudyTimeLength()));
             data.add(map);
         }
         // listview

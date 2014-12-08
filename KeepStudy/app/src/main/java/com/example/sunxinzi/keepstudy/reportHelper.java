@@ -110,7 +110,24 @@ public class ReportHelper {
         return mHashMap;
     }
 
-
+    /**
+     *
+     * @param s
+     * @return
+     */
+    public String formatTime(float s) {
+        int second = (int) s;
+        int hour = second / 3600;
+        second = second % 3600;
+        int minte = second / 60;
+        second = second % 60;
+        return hour + "hour " + minte + "minute " + second + "second";
+    }
+    /**
+     *
+     * @param location
+     * @return
+     */
     public String buildGoogleMap(HashMap location) {
         String marker = "";
         String myLatlng = "";
@@ -125,7 +142,7 @@ public class ReportHelper {
                       "title: '" + val.getCourseName() + "'" +
                       "});";
             marker += "var infowindow" + i + " = new google.maps.InfoWindow({" +
-                      "  content: 'Course Name:" + val.getCourseName() + " <br> Study Length:" + val.getStudyTimeLength() + "'" +
+                      "  content: 'Course Name:" + val.getCourseName() + " <br> Study Length:" + formatTime(val.getStudyTimeLength()) + "'" +
                       "});";
             marker += "google.maps.event.addListener(marker" + i + ", 'click', function() {" +
                       "  infowindow" + i + ".open(map,marker" + i + ");" +
