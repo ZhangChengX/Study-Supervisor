@@ -121,7 +121,8 @@ public class ReportHelper {
         second = second % 3600;
         int minte = second / 60;
         second = second % 60;
-        return hour + "hour " + minte + "minute " + second + "second";
+        //return hour + "hour " + minte + "minute " + second + "second";
+        return hour + minte/60 + " hour";
     }
     /**
      *
